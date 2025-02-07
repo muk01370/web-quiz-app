@@ -52,10 +52,10 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<StartQuiz />} />
-          <Route path="/quiz" element={<Quiz quizData={quizData} setScore={setScore} />} />
+          <Route path="/quiz" element={<Quiz quizData={quizData} score={score} setScore={setScore} />} />
           <Route
             path="/results"
-            element={<Results score={score} totalQuestions={quizData.length} />}
+            element={<Results score={score} totalQuestions={quizData.length} setScore={setScore} />}
           />
         </Routes>
       </div>

@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Quiz({ quizData, setScore }) {
+function Quiz({ quizData, score, setScore }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isCorrect, setIsCorrect] = useState(undefined);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
-  const [streak, setStreak] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setShowFeedback(false);
-    setSelectedAnswer("");
     setTimeLeft(30);
   }, [currentQuestion]);
 
@@ -20,7 +17,6 @@ function Quiz({ quizData, setScore }) {
     if (timeLeft === 0) {
       setShowFeedback(true);
       setIsCorrect(false);
-      setStreak(0);
       return;
     }
 
@@ -41,23 +37,29 @@ function Quiz({ quizData, setScore }) {
   const correctAnswer = currentQ.options?.find(option => option.is_correct)?.description || "Correct answer not available.";
 
   const handleAnswer = (answer) => {
+    if (showFeedback) return; // Prevent multiple selections
+
     setSelectedAnswer(answer);
     const isCorrectAnswer = answer === correctAnswer;
 
     if (isCorrectAnswer) {
-      setScore(prevScore => prevScore + 1);
-      setStreak(prevStreak => prevStreak + 1);
-    } else {
-      setStreak(0);
+      setScore(prevScore => Math.min(prevScore + 1, quizData.length)); // Ensure score doesn't exceed total questions
     }
 
     setIsCorrect(isCorrectAnswer);
     setShowFeedback(true);
+  };
 
-    if (currentQuestion + 1 >= quizData.length) {
-      setTimeout(() => {
-        navigate("/results");
-      }, 2000);
+  const handleNextQuestion = () => {
+    if (currentQuestion + 1 < quizData.length) {
+      setCurrentQuestion(prev => prev + 1);
+
+      // Reset feedback state immediately to prevent answer flash
+      setIsCorrect(undefined);
+      setSelectedAnswer("");
+      setShowFeedback(false);
+    } else {
+      navigate("/results");
     }
   };
 
@@ -69,9 +71,8 @@ function Quiz({ quizData, setScore }) {
         <div className="progress" style={{ width: `${progress}%` }}></div>
       </div>
       <div className="timer">Time Left: {timeLeft}s</div>
-      <div className="streak">Streak: {streak} 🔥</div>
-      <h2>Question {currentQuestion + 1}</h2>
 
+      <h2>Question {currentQuestion + 1}</h2>
       <p>{currentQ.description || "Question not available."}</p>
 
       <div className="answers">
@@ -102,7 +103,8 @@ function Quiz({ quizData, setScore }) {
       {showFeedback && (
         <div className="feedback" aria-live="polite">
           <p>{isCorrect ? "Correct! 🎉" : "Incorrect! ❌"}</p>
-          {!isCorrect && <p>Correct Answer: {correctAnswer}</p>}      </div>
+          {!isCorrect && <p>Correct Answer: {correctAnswer}</p>}
+        </div>
       )}
 
       <div className="navigation-buttons">
@@ -113,14 +115,8 @@ function Quiz({ quizData, setScore }) {
           Previous
         </button>
         <button 
-          onClick={() => {
-            if (currentQuestion + 1 < quizData.length) {
-              setCurrentQuestion(currentQuestion + 1);
-            } else {
-              navigate("/results");
-            }
-          }}
-          disabled={currentQuestion + 1 >= quizData.length || !showFeedback}
+          onClick={handleNextQuestion}
+          disabled={!showFeedback}
         >
           {currentQuestion + 1 >= quizData.length ? "Submit Quiz" : "Next"}
         </button>
