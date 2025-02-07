@@ -102,8 +102,7 @@ function Quiz({ quizData, setScore }) {
       {showFeedback && (
         <div className="feedback" aria-live="polite">
           <p>{isCorrect ? "Correct! 🎉" : "Incorrect! ❌"}</p>
-          {!isCorrect && <p>Correct Answer: {correctAnswer}</p>}
-        </div>
+          {!isCorrect && <p>Correct Answer: {correctAnswer}</p>}      </div>
       )}
 
       <div className="navigation-buttons">
