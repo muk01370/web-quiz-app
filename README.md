@@ -1,12 +1,40 @@
-# Getting Started with Create React App
+# Web Quiz App
+
+This project is a quiz application built using React. It allows users to take quizzes on various topics and provides instant feedback on their answers.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Setup Instructions
+
+To get started with this project, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/muk01370/web-quiz-app.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd web-quiz-app
+   ```
+
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Start the application:
+   ```bash
+   npm start
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 In the project directory, you can run:
 
-### `npm start`
+### Available Scripts
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
