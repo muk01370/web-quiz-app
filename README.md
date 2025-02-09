@@ -8,6 +8,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Setup Instructions
 
+![Home Screen](Home_Screen.png)
+
 To get started with this project, follow these steps:
 
 1. Clone the repository:
